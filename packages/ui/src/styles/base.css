@@ -292,3 +292,8 @@
     transform: translateX(250%);
   }
 }
+
+/* Themed chrome (see `chrome` tokens) re-resolves text colour from its own tokens. */
+[data-orbit-chrome] {
+  color: var(--orb-color-text-primary);
+}

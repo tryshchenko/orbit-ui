@@ -24,7 +24,12 @@ export const AeroHeader = forwardRef<HTMLElement, AeroHeaderProps>(function Aero
   ref,
 ) {
   return (
-    <header ref={ref} className={cn("orb-header orb-material-standard", className)} {...props}>
+    <header
+      ref={ref}
+      data-orbit-chrome=""
+      className={cn("orb-header orb-material-standard", className)}
+      {...props}
+    >
       <div className="orb-header__start">
         {onMenuClick && (
           <IconButton

@@ -178,6 +178,17 @@ export function buildTokenCss(): string {
       name === "minimal" ? `:root,\n[data-orbit-theme="minimal"]` : `[data-orbit-theme="${name}"]`;
     parts.push(`${selector} {\n  color-scheme: ${t.colorScheme};\n${declarations(t.tokens)}\n}`);
   }
+  // Chrome overrides: applied to elements marked `data-orbit-chrome` inside a theme.
+  const chromeSel = (name: string) =>
+    `[data-orbit-theme="${name}"] [data-orbit-chrome],\n[data-orbit-theme="${name}"][data-orbit-chrome]`;
+  for (const name of themeNames) {
+    const t = themes[name];
+    if (!t.chrome) continue;
+    const scheme = t.chromeColorScheme ? `  color-scheme: ${t.chromeColorScheme};\n` : "";
+    parts.push(
+      `${chromeSel(name)} {\n${scheme}${declarations(t.chrome as Record<string, string>)}\n}`,
+    );
+  }
   for (const d of Object.keys(densities) as DensityName[]) {
     const selector =
       d === "comfortable"
@@ -199,6 +210,21 @@ export function buildTokenCss(): string {
   parts.push(
     `[data-orbit-transparency="reduced"] {\n${declarations(opaqueGlass("var(--orb-color-surface-solid)"))}\n  --orb-color-surface-column: var(--orb-color-surface-sunken);\n}`,
   );
+  // Reduced transparency also applies inside themed chrome (which redefines glass).
+  for (const name of themeNames) {
+    const t = themes[name];
+    if (!t.chrome) continue;
+    const fill = t.chrome["color-surface-solid"] ?? "var(--orb-color-surface-solid)";
+    const decl = declarations(opaqueGlass(fill), "    ");
+    parts.push(
+      `@media (prefers-reduced-transparency: reduce) {\n  ${chromeSel(name).replace(/\n/g, "\n  ")} {\n${decl}\n  }\n}`,
+    );
+    const reducedSel = [
+      `[data-orbit-theme="${name}"][data-orbit-transparency="reduced"] [data-orbit-chrome]`,
+      `[data-orbit-transparency="reduced"] [data-orbit-theme="${name}"] [data-orbit-chrome]`,
+    ].join(",\n");
+    parts.push(`${reducedSel} {\n${declarations(opaqueGlass(fill))}\n}`);
+  }
   const noMotion = Object.fromEntries(Object.keys(duration).map((k) => [`duration-${k}`, "0ms"]));
   parts.push(
     `@media (prefers-reduced-motion: reduce) {\n  :root {\n${declarations(noMotion, "    ")}\n  }\n}`,
@@ -216,6 +242,9 @@ export function buildTokenJson() {
     breakpoints,
     densities,
     themes: Object.fromEntries(themeNames.map((n) => [n, themes[n].tokens])),
+    chrome: Object.fromEntries(
+      themeNames.filter((n) => themes[n].chrome).map((n) => [n, themes[n].chrome]),
+    ),
   };
 }
 

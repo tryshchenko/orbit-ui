@@ -66,3 +66,39 @@ describe.each(themeNames)("%s theme contrast", (name) => {
     expect(ratio).toBeGreaterThanOrEqual(AA);
   });
 });
+
+/** Themed chrome (e.g. Scenic's dark glass sidebar/header) over the scene behind it. */
+describe.each(themeNames.filter((n) => themes[n].chrome))("%s chrome contrast", (name) => {
+  const t = { ...themes[name].tokens, ...themes[name].chrome } as typeof themes.minimal.tokens;
+  const scene = themes[name].tokens;
+  const backdrops = [scene["scene-sky-top"], scene["scene-sky-bottom"]];
+  const glass = ["glass-subtle-bg", "glass-standard-bg", "glass-raised-bg"] as const;
+
+  for (const text of [
+    "color-text-primary",
+    "color-text-secondary",
+    "color-text-tertiary",
+    "color-accent-text",
+  ] as const) {
+    it(`${text} meets AA on chrome glass over the scene`, () => {
+      for (const backdrop of backdrops)
+        for (const g of glass)
+          expect(
+            contrastRatio(t[text], backdrop, t[g]),
+            `${g} over ${backdrop}`,
+          ).toBeGreaterThanOrEqual(AA);
+    });
+  }
+
+  it("text meets AA on chrome's opaque surfaces", () => {
+    for (const bg of [t["color-surface-solid"], t["color-surface-raised"]])
+      for (const text of ["color-text-primary", "color-text-secondary"] as const)
+        expect(contrastRatio(t[text], bg)).toBeGreaterThanOrEqual(AA);
+  });
+
+  it.each(toneNames)("%s solid badge meets AA inside chrome", (tone) => {
+    expect(contrastRatio(t["color-surface-solid"], t[`color-${tone}-fg`])).toBeGreaterThanOrEqual(
+      AA,
+    );
+  });
+});

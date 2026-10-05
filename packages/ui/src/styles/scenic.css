@@ -1,261 +1,34 @@
 /* ==========================================================================
-   Aero Scenic — Windows Vista visual language.
+   Aero Scenic — a modern take on the Windows Vista palette.
 
-   Tokens already give Scenic its tinted, framed, streaked glass and aurora
-   backdrop. These rules add the component details people remember from Vista:
-   Segoe UI, glowing captions, glossy "split" buttons, Explorer-style hover and
-   selection, glossy progress bars and light gradient tooltips.
-
-   Content surfaces (cards, tables, forms) stay opaque and quiet — the 70/20/10
-   rule still applies. Every rule here is scoped to the Scenic theme.
+   Most of Scenic is pure tokens: the aurora scene, dark glass chrome (via
+   `data-orbit-chrome` overrides in @orbit/tokens) and bright content glass.
+   Only two compositional rules live here. Radii, controls and spacing are
+   intentionally identical to every other theme.
    ========================================================================== */
 
-[data-orbit-theme="scenic"] {
-  --orb-font-sans:
-    "Segoe UI Variable Text", "Segoe UI", "Inter Variable", "Inter", ui-sans-serif, system-ui,
-    sans-serif;
-
-  /* Vista palette helpers (scoped, not part of the public token API). */
-  --orb-vista-btn: linear-gradient(180deg, #f7fbfe 0%, #edf4fa 48%, #dde9f3 52%, #d2e3f0 100%);
-  --orb-vista-btn-hover: linear-gradient(
-    180deg,
-    #eaf6fd 0%,
-    #d9f0fc 48%,
-    #bee6fd 52%,
-    #a7d9f5 100%
-  );
-  --orb-vista-btn-active: linear-gradient(
-    180deg,
-    #e5f4fc 0%,
-    #c4e5f6 48%,
-    #98d1ef 52%,
-    #6fb6dd 100%
-  );
-  --orb-vista-btn-border: #8199b3;
-  --orb-vista-btn-border-hover: #3c7fb1;
-  --orb-vista-hover: linear-gradient(180deg, #fafcfe 0%, #e9f3fd 100%);
-  --orb-vista-hover-border: #b8d6fb;
-  --orb-vista-selected: linear-gradient(180deg, #e3effc 0%, #c4dcf9 100%);
-  --orb-vista-selected-border: #84acdd;
-}
-
-/* ------------------------------------------------- Caption glow (title bars) */
-
-[data-orbit-theme="scenic"]
-  :is(
-    .orb-header__logo,
-    .orb-inspector__title,
-    .orb-dialog__title,
-    .orb-type-page-title,
-    .orb-sprint__name
-  ) {
-  text-shadow:
-    0 0 1px rgba(255, 255, 255, 0.9),
-    0 0 10px rgba(255, 255, 255, 0.95),
-    0 0 18px rgba(255, 255, 255, 0.6);
-}
-
-/* ------------------------------------------------------------ Glass chrome */
-
-/* Window-frame look for the chrome: a little more frame, a little more gloss. */
-[data-orbit-theme="scenic"] :is(.orb-sidebar, .orb-header, .orb-inspector--docked) {
-  border-radius: 10px;
-}
-[data-orbit-theme="scenic"] .orb-inspector__header {
-  border-bottom-color: rgba(14, 58, 99, 0.18);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1));
-}
-
-/* -------------------------------------------------------- Glossy buttons */
-
-[data-orbit-theme="scenic"] :is(.orb-button--secondary, .orb-filter-chip) {
-  background: var(--orb-vista-btn);
-  border: 1px solid var(--orb-vista-btn-border);
-  border-radius: 4px;
+/* Content sits on a bright "window" surface framed by the dark scene and chrome.
+   Near-opaque, so no backdrop blur is needed over this large area. */
+[data-orbit-theme="scenic"] .orb-shell__main {
+  padding: var(--orb-space-4);
+  background: linear-gradient(180deg, rgba(247, 251, 254, 0.97), rgba(238, 246, 252, 0.96));
+  border: 1px solid var(--orb-glass-border);
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.75),
-    0 1px 1px rgba(14, 58, 99, 0.12);
-}
-[data-orbit-theme="scenic"] :is(.orb-button--secondary, .orb-filter-chip):hover:not(:disabled) {
-  background: var(--orb-vista-btn-hover);
-  border-color: var(--orb-vista-btn-border-hover);
-  box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.7),
-    0 0 6px rgba(60, 160, 230, 0.35);
-}
-[data-orbit-theme="scenic"] :is(.orb-button--secondary, .orb-filter-chip):active:not(:disabled),
-[data-orbit-theme="scenic"] .orb-filter-chip[data-state="open"] {
-  background: var(--orb-vista-btn-active);
-  border-color: #2c628b;
-  box-shadow: inset 0 1px 2px rgba(14, 58, 99, 0.3);
-}
-[data-orbit-theme="scenic"] .orb-filter-chip--active {
-  background: var(--orb-vista-selected);
-  border-color: var(--orb-vista-selected-border);
-  color: var(--orb-color-text-primary);
+    var(--orb-glass-highlight),
+    0 0 0 1px var(--orb-glass-border-outer),
+    var(--orb-shadow-lg);
 }
 
-/* The primary action: hard 50% gloss edge (tokens) + crisper sheen + glow. */
-[data-orbit-theme="scenic"] .orb-button--aero {
-  border-radius: 5px;
-  border-color: #0b3f86;
-  text-shadow: 0 -1px 0 rgba(0, 35, 90, 0.45);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.55),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
-    0 1px 2px rgba(8, 60, 140, 0.3),
-    0 3px 12px var(--orb-color-accent-glow);
-}
-[data-orbit-theme="scenic"] .orb-button--aero::before {
-  inset: 1px 1px 50% 1px;
-  border-radius: 4px 4px 0 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.12));
-}
+/* The primary action keeps a soft aurora glow on hover. */
 [data-orbit-theme="scenic"] .orb-button--aero:hover:not(:disabled) {
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.22),
-    0 1px 2px rgba(8, 60, 140, 0.3),
-    0 0 18px rgba(80, 200, 255, 0.75);
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 1px 2px rgba(8, 60, 140, 0.25),
+    0 0 20px var(--orb-color-accent-glow);
 }
 
-/* --------------------------------------------- Explorer hover & selection */
-
-[data-orbit-theme="scenic"]
-  :is(
-    .orb-sidebar__item:hover,
-    .orb-menu__item:hover:not([data-disabled]):not([aria-disabled="true"]),
-    .orb-grid__row--interactive:hover,
-    .orb-backlog__row:hover,
-    .orb-calendar__day:hover:not(:disabled):not(.orb-calendar__day--selected)
-  ) {
-  background: var(--orb-vista-hover);
-  box-shadow: inset 0 0 0 1px var(--orb-vista-hover-border);
-  border-radius: 3px;
-}
-
-[data-orbit-theme="scenic"]
-  :is(
-    .orb-sidebar__item--active,
-    .orb-sidebar__item--active:hover,
-    .orb-menu__item[data-highlighted],
-    .orb-menu__item[data-active],
-    .orb-grid__row--selected,
-    .orb-backlog__row--selected
-  ) {
-  background: var(--orb-vista-selected);
-  box-shadow:
-    inset 0 0 0 1px var(--orb-vista-selected-border),
-    inset 0 1px 0 1px rgba(255, 255, 255, 0.6);
-  color: var(--orb-color-text-primary);
-  border-radius: 3px;
-}
-/* Vista had no accent bar on selection; the gradient box carries it. */
-[data-orbit-theme="scenic"] .orb-sidebar__item--active::before {
-  display: none;
-}
-[data-orbit-theme="scenic"] .orb-sidebar__item--active .orb-sidebar__icon {
-  color: var(--orb-color-accent-text);
-}
-
-/* ------------------------------------------------------------ Tooltips */
-
-[data-orbit-theme="scenic"] .orb-tooltip {
-  background: linear-gradient(180deg, #ffffff 0%, #e4e5f0 100%);
-  color: #1f2d3d;
-  border: 1px solid #767676;
-  border-radius: 3px;
-  font-weight: var(--orb-weight-regular);
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.22);
-}
-
-/* --------------------------------------------------- Glossy progress bars */
-
-[data-orbit-theme="scenic"] .orb-progress__track {
-  border-radius: 3px;
-  background: linear-gradient(180deg, #f3f3f3 0%, #e2e2e2 49%, #d6d6d6 51%, #e8e8e8 100%);
-  box-shadow:
-    inset 0 0 0 1px #b4b4b4,
-    inset 0 1px 2px rgba(0, 0, 0, 0.08);
-}
-/* Vista green for neutral (accent) progress; semantic tones keep their colour. */
-[data-orbit-theme="scenic"] .orb-progress--accent {
-  --orb-progress-from: #2bb52b;
-  --orb-progress-to: #58d84a;
-}
-[data-orbit-theme="scenic"] .orb-progress__bar {
-  border-radius: 2px;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.6) 0%,
-      rgba(255, 255, 255, 0.25) 48%,
-      transparent 52%
-    ),
-    linear-gradient(
-      90deg,
-      var(--orb-progress-from, var(--orb-color-accent)),
-      var(--orb-progress-to, var(--orb-palette-cyan-500))
-    );
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.15);
-}
-[data-orbit-theme="scenic"] .orb-progress-summary__bar {
-  border-radius: 3px;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
-}
-[data-orbit-theme="scenic"] .orb-progress-summary__segment {
-  background:
-    linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.55) 0%,
-      rgba(255, 255, 255, 0.2) 48%,
-      transparent 52%
-    ),
-    var(--orb-tone-solid);
-}
-
-/* ------------------------------------------------ Board column headers */
-
-/* Explorer "command bar" band on each column header. */
-[data-orbit-theme="scenic"] .orb-kanban-col__header {
-  margin: 1px 1px 6px;
-  border-radius: calc(var(--orb-radius-lg) - 1px) calc(var(--orb-radius-lg) - 1px) 0 0;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.85) 0%,
-    rgba(232, 243, 251, 0.75) 50%,
-    rgba(214, 233, 247, 0.7) 51%,
-    rgba(226, 240, 250, 0.7) 100%
-  );
-  border-bottom: 1px solid rgba(129, 153, 179, 0.45);
-}
-
-/* ------------------------------------------------- Inputs & selects */
-
-[data-orbit-theme="scenic"] :is(.orb-input, .orb-select:not(.orb-select--ghost), .orb-textarea) {
-  border-radius: 3px;
-  border-color: #abadb3 #dbdfe6 #e3e9ef #e2e3ea;
-}
-[data-orbit-theme="scenic"]
-  :is(.orb-input, .orb-select:not(.orb-select--ghost), .orb-textarea):hover {
-  border-color: #5794bf #b7d5ea #c7e2f1 #c5daed;
-}
-
-[data-orbit-theme="scenic"]
-  :is(
-    .orb-input:focus-within,
-    .orb-select:focus-visible,
-    .orb-select[data-state="open"],
-    .orb-textarea:focus-visible
-  ) {
-  border-color: var(--orb-color-border-focus);
-}
-[data-orbit-theme="scenic"] .orb-input--invalid {
-  border-color: var(--orb-color-danger-solid);
-}
-
-@media (prefers-reduced-transparency: reduce) {
-  [data-orbit-theme="scenic"] :is(.orb-sidebar, .orb-header, .orb-inspector--docked) {
-    background-image: none;
+@media (max-width: 767px) {
+  [data-orbit-theme="scenic"] .orb-shell__main {
+    padding: var(--orb-space-3);
   }
 }

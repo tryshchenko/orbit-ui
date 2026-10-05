@@ -60,6 +60,7 @@ export const AeroSidebar = forwardRef<HTMLElement, AeroSidebarProps>(function Ae
       <nav
         ref={ref}
         aria-label={label}
+        data-orbit-chrome=""
         data-compact={compact || undefined}
         className={cn("orb-sidebar orb-material-subtle", className)}
         {...props}

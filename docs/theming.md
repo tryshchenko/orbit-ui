@@ -30,16 +30,26 @@ Because themes are attribute-scoped, you can nest them, for example a dark panel
 
 ## The four themes
 
-| Theme                      | Intent                                           | Glass                                                                                                                                                              | Scenery                                        |
-| -------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------- |
-| **Aero Minimal** (default) | Bright, understated, professional                | Standard                                                                                                                                                           | Soft glows and light ribbons                   |
-| **Aero Scenic**            | Windows Vista–inspired: environmental and glossy | Sky-tinted glass with a dark frame line, white inner line and diagonal glare streaks; glossy "split" buttons; Explorer-style selection; glowing captions; Segoe UI | Deep sky, aurora sweep, rolling hills, bubbles |
-| **Aero Dark**              | Dark navy glass, restrained cyan                 | Navy glass                                                                                                                                                         | Deep radial gradient, faint ribbons            |
-| **Accessible**             | High contrast, reduced effects                   | **Opaque**, no blur, no sheen                                                                                                                                      | None                                           |
+| Theme                      | Intent                                                           | Glass                                                                                                                       | Scenery                                              |
+| -------------------------- | ---------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| **Aero Minimal** (default) | Bright, understated, professional                                | Standard                                                                                                                    | Soft glows and light ribbons                         |
+| **Aero Scenic**            | A modern take on the Windows Vista palette: deeper, richer tones | Dark smoky glass for chrome (sidebar, header) with light text; bright, dense glass and a light "window" surface for content | Deep blue-teal sky, aurora sweep, dark rolling hills |
+| **Aero Dark**              | Dark navy glass, restrained cyan                                 | Navy glass                                                                                                                  | Deep radial gradient, faint ribbons                  |
+| **Accessible**             | High contrast, reduced effects                                   | **Opaque**, no blur, no sheen                                                                                               | None                                                 |
 
 All four pass the token contrast suite and in-browser axe colour-contrast scans.
 
-Scenic's component-level Vista details live in `packages/ui/src/styles/scenic.css`, scoped to `[data-orbit-theme="scenic"]`. Content surfaces such as cards and tables stay opaque in every theme.
+Scenic keeps the same radii, controls and spacing as every other theme. It only borrows Vista's colour and mood.
+
+## Themed chrome
+
+A theme can define `chrome` token overrides. These apply to any element marked `data-orbit-chrome` (`AeroSidebar` and `AeroHeader` set it automatically). Scenic uses this to pair dark glass frames with light content. Overrides cascade to everything inside the chrome (buttons, badges, the project switcher), are covered by the contrast test suite, and fall back to opaque surfaces under reduced transparency. Mark your own chrome regions (a custom toolbar, say) with the same attribute:
+
+```tsx
+<div data-orbit-chrome className="orb-material-standard">
+  …
+</div>
+```
 
 ## Customising
 
