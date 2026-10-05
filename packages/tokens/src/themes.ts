@@ -84,6 +84,8 @@ export const semanticTokenNames = [
   "scene-hill-near",
   "scene-hill-far",
   "scene-intensity",
+  "scene-aurora-a",
+  "scene-aurora-b",
   "scrollbar-thumb",
 ] as const;
 
@@ -202,29 +204,56 @@ const minimal: ThemeTokens = {
   "scene-hill-near": alpha(p.teal[300], 0.16),
   "scene-hill-far": alpha(p.cyan[300], 0.14),
   "scene-intensity": "0.8",
+  "scene-aurora-a": alpha(p.teal[300], 0.35),
+  "scene-aurora-b": alpha(p.cyan[200], 0.35),
   "scrollbar-thumb": alpha(p.slate[900], 0.2),
 };
 
+/**
+ * Aero Scenic leans into the Windows Vista visual language: sky-tinted glass with
+ * a dark outer frame line and white inner line, diagonal glare streaks, a crisp
+ * "split" gloss on primary actions and an aurora-lit landscape behind it all.
+ * Component-level Vista details (glossy buttons, Explorer-style selection,
+ * tooltips, progress bars) live in `@orbit/ui` styles/scenic.css.
+ */
 const scenic: ThemeTokens = {
   ...minimal,
   "color-canvas": "#D6EEFA",
-  "color-text-secondary": "#476380",
-  "color-text-tertiary": "#4C6886",
+  "color-text-secondary": "#3F5A78",
+  "color-text-tertiary": "#405B79",
   "color-canvas-image": `linear-gradient(180deg, #A9DCF7 0%, #D3EEFB 45%, #EAF7F4 100%)`,
-  "color-surface-column": alpha(p.white, 0.46),
-  "glass-subtle-bg": alpha(p.white, 0.56),
-  "glass-standard-bg": alpha(p.white, 0.64),
-  "glass-raised-bg": alpha(p.white, 0.8),
-  "glass-border": alpha(p.white, 0.7),
-  "glass-saturate": "1.8",
-  "scene-sky-top": "#8FD1F4",
-  "scene-sky-bottom": "#E9F8F6",
+  "color-surface-column": alpha(p.white, 0.5),
+  "color-accent-gradient": `linear-gradient(180deg, #4A9BF0 0%, #2A80E6 48%, #0A5FCC 52%, #136CDA 100%)`,
+  "color-accent-gradient-hover": `linear-gradient(180deg, #5DA9F4 0%, #3A8EEC 48%, #1069D8 52%, #2380EA 100%)`,
+  "color-accent-glow": alpha(p.cyan[300], 0.6),
+  // Vista window glass: sky-tinted rather than white, dark frame + white inner line.
+  "glass-subtle-bg": alpha("#D2EBFA", 0.6),
+  "glass-standard-bg": alpha("#DCF0FC", 0.68),
+  "glass-raised-bg": alpha("#EEF7FD", 0.86),
+  "glass-border": alpha(p.white, 0.6),
+  "glass-border-outer": alpha("#0E3A63", 0.42),
+  "glass-highlight": `inset 0 1px 0 ${alpha(p.white, 0.95)}, inset 0 0 0 1px ${alpha(p.white, 0.35)}`,
+  // Top gloss with a crisp edge (title-bar height) + two soft diagonal glare streaks.
+  "glass-sheen": [
+    `linear-gradient(180deg, ${alpha(p.white, 0.62)} 0px, ${alpha(p.white, 0.28)} 26px, ${alpha(p.white, 0.06)} 27px, ${alpha(p.white, 0)} 120px)`,
+    `linear-gradient(118deg, ${alpha(p.white, 0)} 18%, ${alpha(p.white, 0.22)} 26%, ${alpha(p.white, 0)} 34%, ${alpha(p.white, 0)} 58%, ${alpha(p.white, 0.14)} 64%, ${alpha(p.white, 0)} 72%)`,
+  ].join(", "),
+  "glass-blur-subtle": "12px",
+  "glass-blur-standard": "18px",
+  "glass-blur-raised": "24px",
+  "glass-saturate": "1.9",
+  "shadow-lg": `0 4px 10px ${alpha("#0E3A63", 0.1)}, 0 18px 44px ${alpha("#0E3A63", 0.22)}`,
+  "shadow-xl": `0 8px 20px ${alpha("#0E3A63", 0.14)}, 0 30px 70px ${alpha("#0E3A63", 0.3)}`,
+  "scene-sky-top": "#5FB6EC",
+  "scene-sky-bottom": "#E6F7F3",
   "scene-glow-a": alpha(p.cyan[300], 0.55),
   "scene-glow-b": alpha(p.green[200], 0.5),
-  "scene-ribbon": alpha(p.white, 0.75),
+  "scene-ribbon": alpha(p.white, 0.8),
   "scene-hill-near": alpha(p.green[400], 0.42),
   "scene-hill-far": alpha(p.teal[400], 0.3),
   "scene-intensity": "1",
+  "scene-aurora-a": alpha("#6FE3A0", 0.95),
+  "scene-aurora-b": alpha("#9BEFFF", 0.95),
 };
 
 const dark: ThemeTokens = {
@@ -320,6 +349,8 @@ const dark: ThemeTokens = {
   "scene-hill-near": alpha(p.teal[500], 0.1),
   "scene-hill-far": alpha(p.blue[500], 0.1),
   "scene-intensity": "0.7",
+  "scene-aurora-a": alpha(p.green[400], 0.35),
+  "scene-aurora-b": alpha(p.cyan[400], 0.3),
   "scrollbar-thumb": alpha("#B7D8FF", 0.22),
 };
 
@@ -384,7 +415,7 @@ export const themes: Record<ThemeName, ThemeDefinition> = {
   scenic: {
     name: "scenic",
     label: "Aero Scenic",
-    description: "Environmental imagery and a stronger atmosphere.",
+    description: "Vista-inspired glass, glossy controls and an aurora landscape.",
     colorScheme: "light",
     tokens: scenic,
   },

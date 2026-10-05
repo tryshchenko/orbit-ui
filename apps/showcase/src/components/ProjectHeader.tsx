@@ -20,7 +20,7 @@ export function ProjectHeader() {
         <div className="flex min-w-0 items-center gap-3">
           <ProjectIcon project={project} size={44} />
           <div className="min-w-0">
-            <h1 className="app-page-title m-0 truncate">{project.name}</h1>
+            <h1 className="orb-type-page-title m-0 truncate">{project.name}</h1>
             <p className="m-0 truncate text-sm text-fg-muted">{project.description}</p>
           </div>
         </div>

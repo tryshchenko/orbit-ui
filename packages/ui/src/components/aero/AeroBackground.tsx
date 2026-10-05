@@ -26,7 +26,9 @@ export const AeroBackground = forwardRef<HTMLDivElement, AeroBackgroundProps>(
     ref,
   ) {
     const { theme } = useTheme();
-    const ribbonId = `orb-ribbon-${useId().replace(/:/g, "")}`;
+    const uid = useId().replace(/:/g, "");
+    const ribbonId = `orb-ribbon-${uid}`;
+    const auroraId = `orb-aurora-${uid}`;
     const level =
       scenery === "auto"
         ? theme === "scenic"
@@ -74,7 +76,48 @@ export const AeroBackground = forwardRef<HTMLDivElement, AeroBackgroundProps>(
                     style={{ stopColor: "var(--orb-scene-ribbon)", stopOpacity: 0 }}
                   />
                 </linearGradient>
+                <linearGradient id={auroraId} x1="0" y1="0" x2="1" y2="0">
+                  <stop
+                    offset="0"
+                    style={{ stopColor: "var(--orb-scene-aurora-a)", stopOpacity: 0 }}
+                  />
+                  <stop offset="0.3" style={{ stopColor: "var(--orb-scene-aurora-a)" }} />
+                  <stop offset="0.7" style={{ stopColor: "var(--orb-scene-aurora-b)" }} />
+                  <stop
+                    offset="1"
+                    style={{ stopColor: "var(--orb-scene-aurora-b)", stopOpacity: 0 }}
+                  />
+                </linearGradient>
               </defs>
+              {level === "full" && (
+                // Aurora sweep (à la the Vista wallpaper). Soft edges come from stacked
+                // strokes of decreasing width — no SVG filters, so it stays cheap to paint.
+                <g
+                  className="orb-bg__aurora"
+                  fill="none"
+                  stroke={`url(#${auroraId})`}
+                  strokeLinecap="round"
+                >
+                  {[
+                    "M-160 760 C 180 560, 520 640, 820 420 S 1260 70, 1640 110",
+                    "M-160 860 C 260 700, 640 760, 960 560 S 1380 250, 1640 280",
+                  ].map((d, i) => (
+                    <g key={d} opacity={i === 0 ? 1 : 0.65}>
+                      {[
+                        [260, 0.06],
+                        [190, 0.08],
+                        [130, 0.11],
+                        [84, 0.16],
+                        [46, 0.24],
+                        [20, 0.4],
+                      ].map(([w, o]) => (
+                        <path key={w} d={d} strokeWidth={w} opacity={o} />
+                      ))}
+                      <path d={d} strokeWidth={4} stroke="rgba(255,255,255,0.75)" />
+                    </g>
+                  ))}
+                </g>
+              )}
               <g
                 className="orb-bg__ribbons"
                 fill="none"

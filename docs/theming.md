@@ -30,14 +30,16 @@ Because themes are attribute-scoped, you can nest them, for example a dark panel
 
 ## The four themes
 
-| Theme                      | Intent                            | Glass                                      | Scenery                             |
-| -------------------------- | --------------------------------- | ------------------------------------------ | ----------------------------------- |
-| **Aero Minimal** (default) | Bright, understated, professional | Standard                                   | Soft glows and light ribbons        |
-| **Aero Scenic**            | Environmental, atmospheric        | Slightly more translucent, more saturation | Sky, rolling hills, bubbles         |
-| **Aero Dark**              | Dark navy glass, restrained cyan  | Navy glass                                 | Deep radial gradient, faint ribbons |
-| **Accessible**             | High contrast, reduced effects    | **Opaque**, no blur, no sheen              | None                                |
+| Theme                      | Intent                                           | Glass                                                                                                                                                              | Scenery                                        |
+| -------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------- |
+| **Aero Minimal** (default) | Bright, understated, professional                | Standard                                                                                                                                                           | Soft glows and light ribbons                   |
+| **Aero Scenic**            | Windows Vista–inspired: environmental and glossy | Sky-tinted glass with a dark frame line, white inner line and diagonal glare streaks; glossy "split" buttons; Explorer-style selection; glowing captions; Segoe UI | Deep sky, aurora sweep, rolling hills, bubbles |
+| **Aero Dark**              | Dark navy glass, restrained cyan                 | Navy glass                                                                                                                                                         | Deep radial gradient, faint ribbons            |
+| **Accessible**             | High contrast, reduced effects                   | **Opaque**, no blur, no sheen                                                                                                                                      | None                                           |
 
 All four pass the token contrast suite and in-browser axe colour-contrast scans.
+
+Scenic's component-level Vista details live in `packages/ui/src/styles/scenic.css`, scoped to `[data-orbit-theme="scenic"]`. Content surfaces such as cards and tables stay opaque in every theme.
 
 ## Customising
 

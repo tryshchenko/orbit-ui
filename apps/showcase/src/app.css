@@ -28,11 +28,3 @@ body {
   background: var(--orb-color-canvas);
   color: var(--orb-color-text-primary);
 }
-
-/* App-specific compositions (kept tiny — everything else comes from @orbit/ui). */
-.app-page-title {
-  font-size: var(--orb-type-page-title-size);
-  line-height: var(--orb-type-page-title-leading);
-  font-weight: var(--orb-type-page-title-weight);
-  letter-spacing: var(--orb-type-page-title-tracking);
-}
